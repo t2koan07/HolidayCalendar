@@ -8,6 +8,7 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
@@ -32,7 +33,6 @@ import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.example.holidayplanner.R
-import androidx.compose.foundation.layout.size
 import com.example.holidayplanner.ui.theme.HolidayPlannerTheme
 
 @Composable
@@ -50,7 +50,9 @@ fun SettingsScreen(
     ) {
         ElevatedCard(
             modifier = Modifier.fillMaxWidth(),
-            colors = CardDefaults.elevatedCardColors(containerColor = MaterialTheme.colorScheme.surface),
+            colors = CardDefaults.elevatedCardColors(
+                containerColor = MaterialTheme.colorScheme.surface
+            ),
             elevation = CardDefaults.elevatedCardElevation(defaultElevation = 2.dp)
         ) {
             Column(
@@ -91,14 +93,19 @@ fun SettingsScreen(
                     )
                 }
 
-                HorizontalDivider(color = MaterialTheme.colorScheme.outline.copy(alpha = 0.18f))
+                HorizontalDivider(
+                    color = MaterialTheme.colorScheme.outline.copy(alpha = 0.18f)
+                )
 
                 Row(
                     verticalAlignment = Alignment.CenterVertically,
                     horizontalArrangement = Arrangement.spacedBy(10.dp)
                 ) {
                     Icon(
-                        imageVector = if (darkTheme) Icons.Filled.DarkMode else Icons.Filled.LightMode,
+                        imageVector = if (darkTheme)
+                            Icons.Filled.DarkMode
+                        else
+                            Icons.Filled.LightMode,
                         contentDescription = null,
                         tint = MaterialTheme.colorScheme.primary
                     )
@@ -123,7 +130,9 @@ fun SettingsScreen(
 
         ElevatedCard(
             modifier = Modifier.fillMaxWidth(),
-            colors = CardDefaults.elevatedCardColors(containerColor = MaterialTheme.colorScheme.surface),
+            colors = CardDefaults.elevatedCardColors(
+                containerColor = MaterialTheme.colorScheme.surface
+            ),
             elevation = CardDefaults.elevatedCardElevation(defaultElevation = 2.dp)
         ) {
             Column(
@@ -177,7 +186,9 @@ private fun ThemePreviewCard(
 
         ElevatedCard(
             modifier = modifier,
-            colors = CardDefaults.elevatedCardColors(containerColor = MaterialTheme.colorScheme.surface),
+            colors = CardDefaults.elevatedCardColors(
+                containerColor = MaterialTheme.colorScheme.surface
+            ),
             elevation = CardDefaults.elevatedCardElevation(defaultElevation = 1.dp)
         ) {
             Column(
@@ -201,7 +212,7 @@ private fun ThemePreviewCard(
                         verticalArrangement = Arrangement.spacedBy(8.dp)
                     ) {
                         Text(
-                            text = "Public Holidays",
+                            text = stringResource(R.string.home_title),
                             style = MaterialTheme.typography.titleSmall,
                             color = MaterialTheme.colorScheme.onPrimaryContainer
                         )
@@ -210,7 +221,9 @@ private fun ThemePreviewCard(
                             FilterChip(
                                 selected = true,
                                 onClick = { },
-                                label = { Text("Upcoming") },
+                                label = {
+                                    Text(stringResource(R.string.filter_upcoming))
+                                },
                                 colors = FilterChipDefaults.filterChipColors(
                                     selectedContainerColor = MaterialTheme.colorScheme.surface,
                                     selectedLabelColor = MaterialTheme.colorScheme.onSurface
@@ -220,7 +233,9 @@ private fun ThemePreviewCard(
                             FilterChip(
                                 selected = false,
                                 onClick = { },
-                                label = { Text("Global") }
+                                label = {
+                                    Text(stringResource(R.string.filter_global))
+                                }
                             )
                         }
 
@@ -228,7 +243,7 @@ private fun ThemePreviewCard(
                             onClick = { },
                             modifier = Modifier.fillMaxWidth()
                         ) {
-                            Text("Fetch")
+                            Text(stringResource(R.string.fetch_holidays))
                         }
                     }
                 }
@@ -254,12 +269,12 @@ private fun ThemePreviewCard(
 
                         Column(modifier = Modifier.weight(1f)) {
                             Text(
-                                text = "Christmas Eve",
+                                text = stringResource(R.string.sample_holiday_name),
                                 style = MaterialTheme.typography.bodyLarge,
                                 color = MaterialTheme.colorScheme.onSurfaceVariant
                             )
                             Text(
-                                text = "24.12.2025",
+                                text = stringResource(R.string.sample_holiday_date),
                                 style = MaterialTheme.typography.bodyMedium,
                                 color = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.8f)
                             )

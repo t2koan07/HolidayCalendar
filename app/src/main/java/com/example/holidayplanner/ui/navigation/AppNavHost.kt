@@ -26,7 +26,7 @@ fun AppNavHost(
     val title = when (currentRoute) {
         Routes.HOME -> stringResource(R.string.home_title)
         Routes.INFO -> stringResource(R.string.info_title)
-        Routes.SETTINGS -> "Settings"
+        Routes.SETTINGS -> stringResource(R.string.settings_title)
         else -> stringResource(R.string.app_title)
     }
 

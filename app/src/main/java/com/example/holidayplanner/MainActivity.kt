@@ -4,10 +4,10 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.holidayplanner.ui.navigation.AppNavHost
 import com.example.holidayplanner.ui.theme.HolidayPlannerTheme
+import com.example.holidayplanner.viewmodel.HolidayViewModel
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -15,12 +15,12 @@ class MainActivity : ComponentActivity() {
         enableEdgeToEdge()
 
         setContent {
-            val darkTheme = rememberSaveable { mutableStateOf(false) }
+            val vm: HolidayViewModel = viewModel()
 
-            HolidayPlannerTheme(darkTheme = darkTheme.value) {
+            HolidayPlannerTheme(darkTheme = vm.isDarkMode) {
                 AppNavHost(
-                    darkTheme = darkTheme.value,
-                    onDarkThemeChange = { darkTheme.value = it }
+                    darkTheme = vm.isDarkMode,
+                    onDarkThemeChange = vm::updateDarkMode
                 )
             }
         }

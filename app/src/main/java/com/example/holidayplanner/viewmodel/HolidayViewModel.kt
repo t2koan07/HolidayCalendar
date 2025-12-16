@@ -17,14 +17,9 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import retrofit2.HttpException
 
-class HolidayViewModel(
-    application: Application,
-    private val repository: HolidayRepository = HolidayRepository()
-) : AndroidViewModel(application) {
+class HolidayViewModel(application: Application) : AndroidViewModel(application) {
 
-    @Suppress("unused")
-    constructor(application: Application) : this(application, HolidayRepository())
-
+    private val repository = HolidayRepository()
     private val prefs = PrefsDataStore(application.applicationContext)
 
     var uiState: HolidayUiState by mutableStateOf(HolidayUiState.Idle)
@@ -36,6 +31,9 @@ class HolidayViewModel(
     var yearText by mutableStateOf("2025")
         private set
 
+    var isDarkMode by mutableStateOf(false)
+        private set
+
     private var lastQuery: Pair<Int, String>? = null
     private var lastResult: List<PublicHoliday> = emptyList()
 
@@ -43,21 +41,23 @@ class HolidayViewModel(
         viewModelScope.launch {
             selectedCountryCode = prefs.countryCode.first()
             yearText = prefs.year.first()
+            isDarkMode = prefs.darkMode.first()
         }
     }
 
     fun updateCountryCode(code: String) {
         selectedCountryCode = code
-        viewModelScope.launch {
-            prefs.setCountryCode(code)
-        }
+        viewModelScope.launch { prefs.setCountryCode(code) }
     }
 
     fun updateYearText(value: String) {
         yearText = value
-        viewModelScope.launch {
-            prefs.setYear(value)
-        }
+        viewModelScope.launch { prefs.setYear(value) }
+    }
+
+    fun updateDarkMode(enabled: Boolean) {
+        isDarkMode = enabled
+        viewModelScope.launch { prefs.setDarkMode(enabled) }
     }
 
     fun fetchHolidays(yearInput: String, countryInput: String) {
@@ -90,7 +90,6 @@ class HolidayViewModel(
 
                 lastQuery = query
                 lastResult = result
-
                 uiState = HolidayUiState.Success(result)
             } catch (_: HttpException) {
                 uiState = HolidayUiState.Error(R.string.error_http)
