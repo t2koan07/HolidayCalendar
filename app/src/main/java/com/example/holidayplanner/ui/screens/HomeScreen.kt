@@ -51,6 +51,11 @@ import com.example.holidayplanner.ui.components.LoadingView
 import com.example.holidayplanner.ui.state.HolidayUiState
 import com.example.holidayplanner.viewmodel.HolidayViewModel
 import java.util.Calendar
+import androidx.compose.foundation.clickable
+import androidx.compose.foundation.interaction.MutableInteractionSource
+import androidx.compose.ui.platform.LocalFocusManager
+import androidx.compose.ui.platform.LocalSoftwareKeyboardController
+import androidx.compose.material3.OutlinedTextFieldDefaults
 
 @Composable
 fun HomeScreen(
@@ -58,6 +63,8 @@ fun HomeScreen(
 ) {
     val vm: HolidayViewModel = viewModel()
     val state = vm.uiState
+    val focusManager = LocalFocusManager.current
+    val keyboardController = LocalSoftwareKeyboardController.current
 
     val selectedCountry = remember { mutableStateOf(supportedCountries.first { it.code == "FI" }) }
     val year = remember { mutableStateOf("2025") }
@@ -83,6 +90,13 @@ fun HomeScreen(
     Surface(color = MaterialTheme.colorScheme.background) {
         LazyColumn(
             modifier = Modifier
+                .clickable(
+                    indication = null,
+                    interactionSource = remember { MutableInteractionSource() }
+                ) {
+                    focusManager.clearFocus()
+                    keyboardController?.hide()
+                }
                 .padding(paddingValues)
                 .padding(horizontal = 16.dp),
             verticalArrangement = Arrangement.spacedBy(16.dp),
@@ -139,7 +153,14 @@ fun HomeScreen(
                             placeholder = { Text(text = stringResource(R.string.year_hint)) },
                             singleLine = true,
                             keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
-                            modifier = Modifier.fillMaxWidth()
+                            modifier = Modifier.fillMaxWidth(),
+                            colors = OutlinedTextFieldDefaults.colors(
+                                focusedBorderColor = MaterialTheme.colorScheme.outline.copy(alpha = 1.00f),
+                                unfocusedBorderColor = MaterialTheme.colorScheme.outline.copy(alpha = 1.00f),
+                                focusedLabelColor = MaterialTheme.colorScheme.onSurfaceVariant,
+                                unfocusedLabelColor = MaterialTheme.colorScheme.onSurfaceVariant,
+                                cursorColor = MaterialTheme.colorScheme.primary
+                            )
                         )
 
                         Button(
@@ -345,6 +366,7 @@ private fun HeroHeader() {
     ) {
         Column(
             modifier = Modifier
+                .fillMaxWidth()
                 .background(gradient)
                 .padding(16.dp),
             verticalArrangement = Arrangement.spacedBy(6.dp)
