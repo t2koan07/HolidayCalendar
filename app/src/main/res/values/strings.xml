@@ -1,0 +1,46 @@
+<resources>
+    <string name="app_title">HolidayPlanner</string>
+    <string name="app_name">HolidayPlanner</string>
+
+    <string name="home_title">Public Holidays</string>
+    <string name="info_title">Info</string>
+
+    <string name="select_country">Country</string>
+    <string name="select_year">Year</string>
+    <string name="fetch_holidays">Fetch holidays</string>
+
+    <string name="next_holiday">Next holiday</string>
+    <string name="no_holidays_yet">Fetch holidays to see the list.</string>
+
+    <string name="about_title">About this app</string>
+    <string name="about_text">This app fetches official public holidays for a selected country and shows the next upcoming holiday.</string>
+
+    <string name="api_title">API source</string>
+    <string name="api_text">Data is fetched from the Nager.Date service. The API does not require an API key.</string>
+
+    <string name="cd_info">Open info</string>
+    <string name="cd_back">Back</string>
+
+    <string name="loading">Loading...</string>
+    <string name="cd_settings">Open settings</string>
+    <string name="error_title">Something went wrong</string>
+    <string name="retry">Try again</string>
+
+    <string name="error_invalid_year">Please enter a valid year (1900–2100).</string>
+    <string name="error_invalid_country">Please enter a 2-letter country code (e.g., FI).</string>
+    <string name="error_network">Network error.</string>
+    <string name="no_upcoming_holidays">No upcoming holidays found.</string>
+    <string name="error_http">Server error. Please try again.</string>
+    <string name="error_unknown">Something went wrong. Please try again.</string>
+
+    <string name="holidays_list_title">Holidays</string>
+    <string name="date_label">Date</string>
+    <string name="local_name_label">Local name</string>
+    <string name="year_hint">Example: 2025</string>
+
+    <string name="api_url">https://date.nager.at</string>
+    <string name="open_api_site">Open API site</string>
+    <string name="author_line">Made with Kotlin + Jetpack Compose</string>
+    <string name="search_title">Search</string>
+    <string name="home_tagline">Official holidays, clean and fast.</string>
+</resources>
