@@ -76,38 +76,26 @@ fun HolidayListItem(
                             text = holiday.name,
                             style = MaterialTheme.typography.titleMedium
                         )
+
                         Text(
                             text = "${stringResource(R.string.local_name_label)}: ${holiday.localName}",
                             style = MaterialTheme.typography.bodyMedium,
                             color = MaterialTheme.colorScheme.onSurfaceVariant
                         )
 
-                        Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
-                            if (holiday.global == true) {
-                                AssistChip(
-                                    onClick = { expanded = !expanded },
-                                    label = { Text(text = stringResource(R.string.badge_global)) },
-                                    leadingIcon = {
-                                        Icon(imageVector = Icons.Filled.Public, contentDescription = null)
-                                    },
-                                    colors = AssistChipDefaults.assistChipColors(
-                                        containerColor = MaterialTheme.colorScheme.secondaryContainer,
-                                        labelColor = MaterialTheme.colorScheme.onSecondaryContainer,
-                                        leadingIconContentColor = MaterialTheme.colorScheme.onSecondaryContainer
-                                    )
+                        if (holiday.global == true) {
+                            AssistChip(
+                                onClick = { expanded = !expanded },
+                                label = { Text(text = stringResource(R.string.badge_global)) },
+                                leadingIcon = {
+                                    Icon(imageVector = Icons.Filled.Public, contentDescription = null)
+                                },
+                                colors = AssistChipDefaults.assistChipColors(
+                                    containerColor = MaterialTheme.colorScheme.secondaryContainer,
+                                    labelColor = MaterialTheme.colorScheme.onSecondaryContainer,
+                                    leadingIconContentColor = MaterialTheme.colorScheme.onSecondaryContainer
                                 )
-                            }
-
-                            if (holiday.fixed == true) {
-                                AssistChip(
-                                    onClick = { expanded = !expanded },
-                                    label = { Text(text = stringResource(R.string.badge_fixed)) },
-                                    colors = AssistChipDefaults.assistChipColors(
-                                        containerColor = MaterialTheme.colorScheme.tertiaryContainer,
-                                        labelColor = MaterialTheme.colorScheme.onTertiaryContainer
-                                    )
-                                )
-                            }
+                            )
                         }
                     }
                 }

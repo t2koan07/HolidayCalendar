@@ -1,28 +1,64 @@
 package com.example.holidayplanner.viewmodel
 
+import android.app.Application
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
-import androidx.lifecycle.ViewModel
+import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.holidayplanner.R
+import com.example.holidayplanner.data.PrefsDataStore
 import com.example.holidayplanner.data.model.PublicHoliday
 import com.example.holidayplanner.data.repository.HolidayRepository
 import com.example.holidayplanner.ui.state.HolidayUiState
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import retrofit2.HttpException
 
 class HolidayViewModel(
+    application: Application,
     private val repository: HolidayRepository = HolidayRepository()
-) : ViewModel() {
+) : AndroidViewModel(application) {
+
+    @Suppress("unused")
+    constructor(application: Application) : this(application, HolidayRepository())
+
+    private val prefs = PrefsDataStore(application.applicationContext)
 
     var uiState: HolidayUiState by mutableStateOf(HolidayUiState.Idle)
         private set
 
+    var selectedCountryCode by mutableStateOf("FI")
+        private set
+
+    var yearText by mutableStateOf("2025")
+        private set
+
     private var lastQuery: Pair<Int, String>? = null
     private var lastResult: List<PublicHoliday> = emptyList()
+
+    init {
+        viewModelScope.launch {
+            selectedCountryCode = prefs.countryCode.first()
+            yearText = prefs.year.first()
+        }
+    }
+
+    fun updateCountryCode(code: String) {
+        selectedCountryCode = code
+        viewModelScope.launch {
+            prefs.setCountryCode(code)
+        }
+    }
+
+    fun updateYearText(value: String) {
+        yearText = value
+        viewModelScope.launch {
+            prefs.setYear(value)
+        }
+    }
 
     fun fetchHolidays(yearInput: String, countryInput: String) {
         val year = yearInput.toIntOrNull()

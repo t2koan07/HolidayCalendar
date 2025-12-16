@@ -20,18 +20,19 @@
 
     <string name="cd_info">Open info</string>
     <string name="cd_back">Back</string>
+    <string name="cd_settings">Open settings</string>
 
     <string name="loading">Loading…</string>
-    <string name="cd_settings">Open settings</string>
     <string name="error_title">Something went wrong</string>
     <string name="retry">Try again</string>
 
     <string name="error_invalid_year">Please enter a valid year (1900–2100).</string>
     <string name="error_invalid_country">Please enter a 2-letter country code (e.g., FI).</string>
     <string name="error_network">Network error.</string>
-    <string name="no_upcoming_holidays">No upcoming holidays found.</string>
     <string name="error_http">Server error. Please try again.</string>
     <string name="error_unknown">Something went wrong. Please try again.</string>
+
+    <string name="no_upcoming_holidays">No upcoming holidays found.</string>
 
     <string name="holidays_list_title">Holidays</string>
     <string name="date_label">Date</string>
@@ -41,16 +42,15 @@
     <string name="api_url">https://date.nager.at</string>
     <string name="open_api_site">Open API site</string>
     <string name="author_line">Made with Kotlin + Jetpack Compose</string>
+
     <string name="search_title">Search</string>
     <string name="home_tagline">Official holidays, clean and fast.</string>
 
     <string name="filter_upcoming">Upcoming</string>
     <string name="filter_global">Global</string>
-    <string name="filter_fixed">Fixed</string>
     <string name="no_results_filters">No holidays match the selected filters.</string>
 
     <string name="badge_global">Global</string>
-    <string name="badge_fixed">Fixed date</string>
 
     <string name="details_types">Types</string>
     <string name="details_country">Country</string>
@@ -73,5 +73,4 @@
     <string name="feature_next">Shows the next upcoming holiday</string>
     <string name="feature_official">Uses official public holiday data</string>
     <string name="version_label">Version</string>
-
 </resources>

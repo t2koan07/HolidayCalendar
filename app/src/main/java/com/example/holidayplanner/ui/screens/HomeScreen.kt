@@ -66,26 +66,30 @@ fun HomeScreen(
     val focusManager = LocalFocusManager.current
     val keyboardController = LocalSoftwareKeyboardController.current
 
-    val selectedCountry = remember { mutableStateOf(supportedCountries.first { it.code == "FI" }) }
-    val year = remember { mutableStateOf("2025") }
+    val selectedCountry = supportedCountries.firstOrNull { it.code == vm.selectedCountryCode }
+        ?: supportedCountries.first { it.code == "FI" }
+    val year = vm.yearText
 
     var filterUpcoming by remember { mutableStateOf(true) }
     var filterGlobal by remember { mutableStateOf(false) }
-    var filterFixed by remember { mutableStateOf(false) }
 
     val sortedHolidays = (state as? HolidayUiState.Success)
         ?.holidays
         ?.sortedBy { it.date }
         .orEmpty()
 
+    val currentYear = Calendar.getInstance().get(Calendar.YEAR)
     val todayIso = remember { getTodayIsoDate() }
 
     val filtered = sortedHolidays
-        .let { list -> if (filterUpcoming) list.filter { it.date >= todayIso } else list }
+        .let { list ->
+            if (filterUpcoming && year.toIntOrNull() == currentYear)
+            list.filter { it.date >= todayIso }
+            else list
+        }
         .let { list -> if (filterGlobal) list.filter { it.global == true } else list }
-        .let { list -> if (filterFixed) list.filter { it.fixed == true } else list }
 
-    val nextHoliday = sortedHolidays.firstOrNull { it.date >= todayIso }
+    val nextHoliday = filtered.firstOrNull { it.date >= todayIso }
 
     Surface(color = MaterialTheme.colorScheme.background) {
         LazyColumn(
@@ -132,22 +136,22 @@ fun HomeScreen(
                         }
 
                         Text(
-                            text = "${selectedCountry.value.name} (${selectedCountry.value.code}), ${year.value}",
+                            text = "${selectedCountry.name} (${selectedCountry.code}), $year",
                             style = MaterialTheme.typography.bodyMedium,
                             color = MaterialTheme.colorScheme.onSurfaceVariant
                         )
 
                         CountryDropdown(
-                            selected = selectedCountry.value,
+                            selected = selectedCountry,
                             countries = supportedCountries,
-                            onSelected = { selectedCountry.value = it },
+                            onSelected = { vm.updateCountryCode(it.code) },
                             label = stringResource(R.string.select_country)
                         )
 
                         OutlinedTextField(
-                            value = year.value,
+                            value = year,
                             onValueChange = { input ->
-                                year.value = input.filter { it.isDigit() }.take(4)
+                                vm.updateYearText(input.filter { it.isDigit() }.take(4))
                             },
                             label = { Text(text = stringResource(R.string.select_year)) },
                             placeholder = { Text(text = stringResource(R.string.year_hint)) },
@@ -165,7 +169,7 @@ fun HomeScreen(
 
                         Button(
                             enabled = state !is HolidayUiState.Loading,
-                            onClick = { vm.fetchHolidays(year.value, selectedCountry.value.code) },
+                            onClick = { vm.fetchHolidays(vm.yearText, vm.selectedCountryCode) },
                             modifier = Modifier
                                 .fillMaxWidth()
                                 .height(54.dp),
@@ -211,7 +215,7 @@ fun HomeScreen(
                             HolidayUiState.Loading -> LoadingView()
                             is HolidayUiState.Error -> ErrorView(
                                 message = stringResource(state.messageResId),
-                                onRetry = { vm.fetchHolidays(year.value, selectedCountry.value.code) }
+                                onRetry = { vm.fetchHolidays(vm.yearText, vm.selectedCountryCode) }
                             )
                             is HolidayUiState.Success -> {
                                 Text(
@@ -241,7 +245,7 @@ fun HomeScreen(
                                             color = MaterialTheme.colorScheme.secondaryContainer
                                         ) {
                                             Text(
-                                                text = nextHoliday.countryCode ?: selectedCountry.value.code,
+                                                text = nextHoliday.countryCode ?: selectedCountry.code,
                                                 style = MaterialTheme.typography.labelMedium,
                                                 color = MaterialTheme.colorScheme.onSecondaryContainer,
                                                 modifier = Modifier.padding(horizontal = 10.dp, vertical = 6.dp)
@@ -317,16 +321,6 @@ fun HomeScreen(
                                         selectedLeadingIconColor = MaterialTheme.colorScheme.onPrimaryContainer
                                     )
                                 )
-
-                                FilterChip(
-                                    selected = filterFixed,
-                                    onClick = { filterFixed = !filterFixed },
-                                    label = { Text(stringResource(R.string.filter_fixed)) },
-                                    colors = FilterChipDefaults.filterChipColors(
-                                        selectedContainerColor = MaterialTheme.colorScheme.primaryContainer,
-                                        selectedLabelColor = MaterialTheme.colorScheme.onPrimaryContainer
-                                    )
-                                )
                             }
 
                             if (filtered.isEmpty()) {
@@ -355,7 +349,7 @@ private fun HeroHeader() {
     val gradient = Brush.linearGradient(
         colors = listOf(
             MaterialTheme.colorScheme.primaryContainer,
-            MaterialTheme.colorScheme.background
+            MaterialTheme.colorScheme.surfaceVariant
         )
     )
 

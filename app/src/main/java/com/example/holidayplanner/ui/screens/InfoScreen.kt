@@ -1,8 +1,6 @@
 package com.example.holidayplanner.ui.screens
 
 import android.content.Intent
-import android.content.pm.PackageManager
-import android.os.Build
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -37,6 +35,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.core.net.toUri
 import com.example.holidayplanner.R
+import androidx.compose.foundation.layout.height
 
 @Composable
 fun InfoScreen(
@@ -44,12 +43,11 @@ fun InfoScreen(
 ) {
     val context = LocalContext.current
     val apiUrl = stringResource(R.string.api_url)
-    val versionName = getAppVersionName(context)
 
     val heroGradient = Brush.linearGradient(
         colors = listOf(
             MaterialTheme.colorScheme.primaryContainer,
-            MaterialTheme.colorScheme.surface
+            MaterialTheme.colorScheme.surfaceVariant
         )
     )
 
@@ -125,7 +123,7 @@ fun InfoScreen(
 
                 Row(
                     modifier = Modifier.fillMaxWidth(),
-                    horizontalArrangement = Arrangement.SpaceBetween
+                    horizontalArrangement = Arrangement.Start
                 ) {
                     Surface(
                         shape = MaterialTheme.shapes.large,
@@ -133,17 +131,6 @@ fun InfoScreen(
                     ) {
                         Text(
                             text = stringResource(R.string.author_line),
-                            style = MaterialTheme.typography.labelLarge,
-                            modifier = Modifier.padding(horizontal = 12.dp, vertical = 10.dp)
-                        )
-                    }
-
-                    Surface(
-                        shape = MaterialTheme.shapes.large,
-                        color = MaterialTheme.colorScheme.surface.copy(alpha = 0.7f)
-                    ) {
-                        Text(
-                            text = "${stringResource(R.string.version_label)} $versionName",
                             style = MaterialTheme.typography.labelLarge,
                             modifier = Modifier.padding(horizontal = 12.dp, vertical = 10.dp)
                         )
@@ -209,15 +196,24 @@ fun InfoScreen(
                         val intent = Intent(Intent.ACTION_VIEW, apiUrl.toUri())
                         context.startActivity(intent)
                     },
-                    modifier = Modifier.fillMaxWidth(),
-                    shape = MaterialTheme.shapes.large
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .height(64.dp),
+                    shape = MaterialTheme.shapes.large,
+                    contentPadding = PaddingValues(0.dp)
                 ) {
-                    Icon(
-                        imageVector = Icons.AutoMirrored.Filled.OpenInNew,
-                        contentDescription = null
-                    )
-                    Spacer(modifier = Modifier.width(10.dp))
-                    Text(text = stringResource(R.string.open_api_site))
+                    Row(
+                        verticalAlignment = Alignment.CenterVertically,
+                        horizontalArrangement = Arrangement.Center,
+                        modifier = Modifier.fillMaxWidth()
+                    ) {
+                        Icon(
+                            imageVector = Icons.AutoMirrored.Filled.OpenInNew,
+                            contentDescription = null
+                        )
+                        Spacer(modifier = Modifier.width(10.dp))
+                        Text(text = stringResource(R.string.open_api_site))
+                    }
                 }
             }
         }
@@ -250,23 +246,5 @@ private fun FeatureRow(
             style = MaterialTheme.typography.bodyMedium,
             color = MaterialTheme.colorScheme.onPrimaryContainer.copy(alpha = 0.9f)
         )
-    }
-}
-
-private fun getAppVersionName(context: android.content.Context): String {
-    return try {
-        val pm = context.packageManager
-        val pkg = context.packageName
-        if (Build.VERSION.SDK_INT >= 33) {
-            pm.getPackageInfo(
-                pkg,
-                PackageManager.PackageInfoFlags.of(0)
-            ).versionName ?: "?"
-        } else {
-            @Suppress("DEPRECATION")
-            pm.getPackageInfo(pkg, 0).versionName ?: "?"
-        }
-    } catch (_: Exception) {
-        "?"
     }
 }
