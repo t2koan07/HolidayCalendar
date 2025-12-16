@@ -43,4 +43,35 @@
     <string name="author_line">Made with Kotlin + Jetpack Compose</string>
     <string name="search_title">Search</string>
     <string name="home_tagline">Official holidays, clean and fast.</string>
+
+    <string name="filter_upcoming">Upcoming</string>
+    <string name="filter_global">Global</string>
+    <string name="filter_fixed">Fixed</string>
+    <string name="no_results_filters">No holidays match the selected filters.</string>
+
+    <string name="badge_global">Global</string>
+    <string name="badge_fixed">Fixed date</string>
+
+    <string name="details_types">Types</string>
+    <string name="details_country">Country</string>
+    <string name="details_counties">Counties</string>
+    <string name="tap_to_collapse">Tap again to close</string>
+
+    <string name="settings_appearance_title">Appearance</string>
+    <string name="settings_appearance_subtitle">Theme and visual preferences</string>
+
+    <string name="settings_dark_mode">Dark mode</string>
+    <string name="settings_dark_mode_on">Enabled</string>
+    <string name="settings_dark_mode_off">Disabled</string>
+
+    <string name="settings_theme_preview_title">Theme preview</string>
+    <string name="settings_theme_preview_subtitle">Preview both themes at a glance</string>
+    <string name="settings_theme_light">Light</string>
+    <string name="settings_theme_dark">Dark</string>
+
+    <string name="feature_search">Search holidays by country and year</string>
+    <string name="feature_next">Shows the next upcoming holiday</string>
+    <string name="feature_official">Uses official public holiday data</string>
+    <string name="version_label">Version</string>
+
 </resources>

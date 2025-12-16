@@ -1,19 +1,30 @@
 package com.example.holidayplanner.ui.screens
 
+import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.CalendarMonth
+import androidx.compose.material.icons.filled.FilterAlt
+import androidx.compose.material.icons.filled.Public
+import androidx.compose.material.icons.filled.Refresh
+import androidx.compose.material.icons.filled.Update
+import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.ElevatedCard
-import androidx.compose.material3.FilledTonalButton
+import androidx.compose.material3.FilterChip
+import androidx.compose.material3.FilterChipDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
@@ -22,7 +33,11 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.setValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
@@ -47,12 +62,22 @@ fun HomeScreen(
     val selectedCountry = remember { mutableStateOf(supportedCountries.first { it.code == "FI" }) }
     val year = remember { mutableStateOf("2025") }
 
+    var filterUpcoming by remember { mutableStateOf(true) }
+    var filterGlobal by remember { mutableStateOf(false) }
+    var filterFixed by remember { mutableStateOf(false) }
+
     val sortedHolidays = (state as? HolidayUiState.Success)
         ?.holidays
         ?.sortedBy { it.date }
         .orEmpty()
 
     val todayIso = remember { getTodayIsoDate() }
+
+    val filtered = sortedHolidays
+        .let { list -> if (filterUpcoming) list.filter { it.date >= todayIso } else list }
+        .let { list -> if (filterGlobal) list.filter { it.global == true } else list }
+        .let { list -> if (filterFixed) list.filter { it.fixed == true } else list }
+
     val nextHoliday = sortedHolidays.firstOrNull { it.date >= todayIso }
 
     Surface(color = MaterialTheme.colorScheme.background) {
@@ -64,52 +89,33 @@ fun HomeScreen(
             contentPadding = PaddingValues(top = 16.dp, bottom = 24.dp)
         ) {
             item {
-                Row(
-                    modifier = Modifier.fillMaxWidth(),
-                    horizontalArrangement = Arrangement.spacedBy(12.dp)
-                ) {
-                    Surface(
-                        shape = MaterialTheme.shapes.large,
-                        color = MaterialTheme.colorScheme.primaryContainer
-                    ) {
-                        Icon(
-                            imageVector = Icons.Filled.CalendarMonth,
-                            contentDescription = null,
-                            tint = MaterialTheme.colorScheme.onPrimaryContainer,
-                            modifier = Modifier.padding(12.dp)
-                        )
-                    }
-
-                    Column(verticalArrangement = Arrangement.spacedBy(2.dp)) {
-                        Text(
-                            text = stringResource(R.string.home_title),
-                            style = MaterialTheme.typography.titleLarge
-                        )
-                        Text(
-                            text = "Official holidays, clean and fast.",
-                            style = MaterialTheme.typography.bodyMedium,
-                            color = MaterialTheme.colorScheme.onSurfaceVariant
-                        )
-                    }
-                }
+                HeroHeader()
             }
 
             item {
                 ElevatedCard(
                     modifier = Modifier.fillMaxWidth(),
-                    colors = CardDefaults.elevatedCardColors(
-                        containerColor = MaterialTheme.colorScheme.surface
-                    ),
+                    colors = CardDefaults.elevatedCardColors(containerColor = MaterialTheme.colorScheme.surface),
                     elevation = CardDefaults.elevatedCardElevation(defaultElevation = 2.dp)
                 ) {
                     Column(
                         modifier = Modifier.padding(16.dp),
                         verticalArrangement = Arrangement.spacedBy(12.dp)
                     ) {
-                        Text(
-                            text = "Search",
-                            style = MaterialTheme.typography.titleMedium
-                        )
+                        Row(
+                            verticalAlignment = Alignment.CenterVertically,
+                            horizontalArrangement = Arrangement.spacedBy(8.dp)
+                        ) {
+                            Icon(
+                                imageVector = Icons.Filled.FilterAlt,
+                                contentDescription = null,
+                                tint = MaterialTheme.colorScheme.primary
+                            )
+                            Text(
+                                text = stringResource(R.string.search_title),
+                                style = MaterialTheme.typography.titleMedium
+                            )
+                        }
 
                         Text(
                             text = "${selectedCountry.value.name} (${selectedCountry.value.code}), ${year.value}",
@@ -136,14 +142,29 @@ fun HomeScreen(
                             modifier = Modifier.fillMaxWidth()
                         )
 
-                        FilledTonalButton(
+                        Button(
                             enabled = state !is HolidayUiState.Loading,
                             onClick = { vm.fetchHolidays(year.value, selectedCountry.value.code) },
                             modifier = Modifier
                                 .fillMaxWidth()
-                                .height(52.dp)
+                                .height(54.dp),
+                            colors = ButtonDefaults.buttonColors(
+                                containerColor = MaterialTheme.colorScheme.primary,
+                                contentColor = MaterialTheme.colorScheme.onPrimary
+                            ),
+                            shape = MaterialTheme.shapes.large
                         ) {
+                            Icon(imageVector = Icons.Filled.Refresh, contentDescription = null)
+                            Spacer(modifier = Modifier.width(10.dp))
                             Text(text = stringResource(R.string.fetch_holidays))
+                        }
+
+                        AnimatedVisibility(visible = state is HolidayUiState.Loading) {
+                            Text(
+                                text = stringResource(R.string.loading),
+                                style = MaterialTheme.typography.bodyMedium,
+                                color = MaterialTheme.colorScheme.onSurfaceVariant
+                            )
                         }
                     }
                 }
@@ -152,9 +173,7 @@ fun HomeScreen(
             item {
                 ElevatedCard(
                     modifier = Modifier.fillMaxWidth(),
-                    colors = CardDefaults.elevatedCardColors(
-                        containerColor = MaterialTheme.colorScheme.surface
-                    ),
+                    colors = CardDefaults.elevatedCardColors(containerColor = MaterialTheme.colorScheme.surface),
                     elevation = CardDefaults.elevatedCardElevation(defaultElevation = 2.dp)
                 ) {
                     Column(
@@ -176,20 +195,37 @@ fun HomeScreen(
                             is HolidayUiState.Success -> {
                                 Text(
                                     text = nextHoliday?.name ?: stringResource(R.string.no_upcoming_holidays),
-                                    style = MaterialTheme.typography.titleMedium
+                                    style = MaterialTheme.typography.titleLarge
                                 )
 
                                 if (nextHoliday != null) {
-                                    Surface(
-                                        shape = MaterialTheme.shapes.medium,
-                                        color = MaterialTheme.colorScheme.primaryContainer
+                                    Row(
+                                        verticalAlignment = Alignment.CenterVertically,
+                                        horizontalArrangement = Arrangement.spacedBy(10.dp)
                                     ) {
-                                        Text(
-                                            text = formatFinnishDate(nextHoliday.date),
-                                            style = MaterialTheme.typography.labelMedium,
-                                            color = MaterialTheme.colorScheme.onPrimaryContainer,
-                                            modifier = Modifier.padding(horizontal = 10.dp, vertical = 6.dp)
-                                        )
+                                        Surface(
+                                            shape = MaterialTheme.shapes.medium,
+                                            color = MaterialTheme.colorScheme.primaryContainer
+                                        ) {
+                                            Text(
+                                                text = formatFinnishDate(nextHoliday.date),
+                                                style = MaterialTheme.typography.labelMedium,
+                                                color = MaterialTheme.colorScheme.onPrimaryContainer,
+                                                modifier = Modifier.padding(horizontal = 10.dp, vertical = 6.dp)
+                                            )
+                                        }
+
+                                        Surface(
+                                            shape = MaterialTheme.shapes.medium,
+                                            color = MaterialTheme.colorScheme.secondaryContainer
+                                        ) {
+                                            Text(
+                                                text = nextHoliday.countryCode ?: selectedCountry.value.code,
+                                                style = MaterialTheme.typography.labelMedium,
+                                                color = MaterialTheme.colorScheme.onSecondaryContainer,
+                                                modifier = Modifier.padding(horizontal = 10.dp, vertical = 6.dp)
+                                            )
+                                        }
                                     }
 
                                     Text(
@@ -208,9 +244,7 @@ fun HomeScreen(
                 item {
                     ElevatedCard(
                         modifier = Modifier.fillMaxWidth(),
-                        colors = CardDefaults.elevatedCardColors(
-                            containerColor = MaterialTheme.colorScheme.surface
-                        ),
+                        colors = CardDefaults.elevatedCardColors(containerColor = MaterialTheme.colorScheme.surface),
                         elevation = CardDefaults.elevatedCardElevation(defaultElevation = 2.dp)
                     ) {
                         Column(
@@ -222,13 +256,126 @@ fun HomeScreen(
                                 style = MaterialTheme.typography.titleMedium
                             )
 
-                            Column(verticalArrangement = Arrangement.spacedBy(10.dp)) {
-                                sortedHolidays.forEach { holiday ->
-                                    HolidayListItem(holiday = holiday)
+                            Row(
+                                modifier = Modifier.fillMaxWidth(),
+                                horizontalArrangement = Arrangement.spacedBy(10.dp),
+                                verticalAlignment = Alignment.CenterVertically
+                            ) {
+                                FilterChip(
+                                    selected = filterUpcoming,
+                                    onClick = { filterUpcoming = !filterUpcoming },
+                                    label = { Text(stringResource(R.string.filter_upcoming)) },
+                                    leadingIcon = {
+                                        Icon(
+                                            imageVector = Icons.Filled.Update,
+                                            contentDescription = null,
+                                            modifier = Modifier.padding(end = 2.dp)
+                                        )
+                                    },
+                                    colors = FilterChipDefaults.filterChipColors(
+                                        selectedContainerColor = MaterialTheme.colorScheme.primaryContainer,
+                                        selectedLabelColor = MaterialTheme.colorScheme.onPrimaryContainer,
+                                        selectedLeadingIconColor = MaterialTheme.colorScheme.onPrimaryContainer
+                                    )
+                                )
+
+                                FilterChip(
+                                    selected = filterGlobal,
+                                    onClick = { filterGlobal = !filterGlobal },
+                                    label = { Text(stringResource(R.string.filter_global)) },
+                                    leadingIcon = {
+                                        Icon(
+                                            imageVector = Icons.Filled.Public,
+                                            contentDescription = null,
+                                            modifier = Modifier.padding(end = 2.dp)
+                                        )
+                                    },
+                                    colors = FilterChipDefaults.filterChipColors(
+                                        selectedContainerColor = MaterialTheme.colorScheme.primaryContainer,
+                                        selectedLabelColor = MaterialTheme.colorScheme.onPrimaryContainer,
+                                        selectedLeadingIconColor = MaterialTheme.colorScheme.onPrimaryContainer
+                                    )
+                                )
+
+                                FilterChip(
+                                    selected = filterFixed,
+                                    onClick = { filterFixed = !filterFixed },
+                                    label = { Text(stringResource(R.string.filter_fixed)) },
+                                    colors = FilterChipDefaults.filterChipColors(
+                                        selectedContainerColor = MaterialTheme.colorScheme.primaryContainer,
+                                        selectedLabelColor = MaterialTheme.colorScheme.onPrimaryContainer
+                                    )
+                                )
+                            }
+
+                            if (filtered.isEmpty()) {
+                                Text(
+                                    text = stringResource(R.string.no_results_filters),
+                                    style = MaterialTheme.typography.bodyMedium,
+                                    color = MaterialTheme.colorScheme.onSurfaceVariant
+                                )
+                            } else {
+                                Column(verticalArrangement = Arrangement.spacedBy(10.dp)) {
+                                    filtered.forEach { holiday ->
+                                        HolidayListItem(holiday = holiday)
+                                    }
                                 }
                             }
                         }
                     }
+                }
+            }
+        }
+    }
+}
+
+@Composable
+private fun HeroHeader() {
+    val gradient = Brush.linearGradient(
+        colors = listOf(
+            MaterialTheme.colorScheme.primaryContainer,
+            MaterialTheme.colorScheme.background
+        )
+    )
+
+    ElevatedCard(
+        modifier = Modifier.fillMaxWidth(),
+        colors = CardDefaults.elevatedCardColors(containerColor = MaterialTheme.colorScheme.primaryContainer),
+        elevation = CardDefaults.elevatedCardElevation(defaultElevation = 2.dp)
+    ) {
+        Column(
+            modifier = Modifier
+                .background(gradient)
+                .padding(16.dp),
+            verticalArrangement = Arrangement.spacedBy(6.dp)
+        ) {
+            Row(
+                verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.spacedBy(12.dp)
+            ) {
+                Surface(
+                    shape = MaterialTheme.shapes.large,
+                    color = MaterialTheme.colorScheme.surface
+                ) {
+                    Icon(
+                        imageVector = Icons.Filled.CalendarMonth,
+                        contentDescription = null,
+                        tint = MaterialTheme.colorScheme.primary,
+                        modifier = Modifier.padding(12.dp)
+                    )
+                }
+
+                Column {
+                    Text(
+                        text = stringResource(R.string.home_title),
+                        style = MaterialTheme.typography.headlineSmall,
+                        color = MaterialTheme.colorScheme.onPrimaryContainer
+                    )
+                    Text(
+                        text = stringResource(R.string.home_tagline),
+                        style = MaterialTheme.typography.bodyMedium,
+                        color = MaterialTheme.colorScheme.onPrimaryContainer.copy(alpha = 0.85f)
+                    )
                 }
             }
         }
