@@ -198,7 +198,7 @@ fun InfoScreen(
                     },
                     modifier = Modifier
                         .fillMaxWidth()
-                        .height(64.dp),
+                        .height(54.dp),
                     shape = MaterialTheme.shapes.large,
                     contentPadding = PaddingValues(0.dp)
                 ) {
