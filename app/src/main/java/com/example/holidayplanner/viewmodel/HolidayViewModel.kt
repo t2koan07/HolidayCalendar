@@ -75,10 +75,6 @@ class HolidayViewModel(application: Application) : AndroidViewModel(application)
         }
 
         val query = year to countryCode
-        if (lastQuery == query && lastResult.isNotEmpty()) {
-            uiState = HolidayUiState.Success(lastResult)
-            return
-        }
 
         uiState = HolidayUiState.Loading
 

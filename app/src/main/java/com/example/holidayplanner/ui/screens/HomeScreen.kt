@@ -6,11 +6,8 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
@@ -19,8 +16,6 @@ import androidx.compose.material.icons.filled.FilterAlt
 import androidx.compose.material.icons.filled.Public
 import androidx.compose.material.icons.filled.Refresh
 import androidx.compose.material.icons.filled.Update
-import androidx.compose.material3.Button
-import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.ElevatedCard
 import androidx.compose.material3.FilterChip
@@ -56,6 +51,7 @@ import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.material3.OutlinedTextFieldDefaults
+import com.example.holidayplanner.ui.components.AppActionButton
 
 @Composable
 fun HomeScreen(
@@ -167,22 +163,14 @@ fun HomeScreen(
                             )
                         )
 
-                        Button(
-                            enabled = state !is HolidayUiState.Loading,
-                            onClick = { vm.fetchHolidays(vm.yearText, vm.selectedCountryCode) },
-                            modifier = Modifier
-                                .fillMaxWidth()
-                                .height(54.dp),
-                            colors = ButtonDefaults.buttonColors(
-                                containerColor = MaterialTheme.colorScheme.primary,
-                                contentColor = MaterialTheme.colorScheme.onPrimary
-                            ),
-                            shape = MaterialTheme.shapes.large
-                        ) {
-                            Icon(imageVector = Icons.Filled.Refresh, contentDescription = null)
-                            Spacer(modifier = Modifier.width(10.dp))
-                            Text(text = stringResource(R.string.fetch_holidays))
-                        }
+                        AppActionButton(
+                            text = stringResource(R.string.fetch_holidays),
+                            icon = Icons.Filled.Refresh,
+                            spinIconOnClick = true,
+                            isLoading = state is HolidayUiState.Loading,
+                            loadingText = stringResource(R.string.loading),
+                            onClick = { vm.fetchHolidays(vm.yearText, vm.selectedCountryCode) }
+                        )
 
                         AnimatedVisibility(visible = state is HolidayUiState.Loading) {
                             Text(

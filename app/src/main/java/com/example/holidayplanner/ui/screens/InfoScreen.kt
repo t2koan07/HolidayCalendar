@@ -6,10 +6,8 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.OpenInNew
@@ -18,7 +16,6 @@ import androidx.compose.material.icons.filled.CalendarMonth
 import androidx.compose.material.icons.filled.Info
 import androidx.compose.material.icons.filled.Public
 import androidx.compose.material.icons.filled.Search
-import androidx.compose.material3.Button
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.ElevatedCard
 import androidx.compose.material3.HorizontalDivider
@@ -35,7 +32,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.core.net.toUri
 import com.example.holidayplanner.R
-import androidx.compose.foundation.layout.height
+import com.example.holidayplanner.ui.components.AppActionButton
 
 @Composable
 fun InfoScreen(
@@ -191,30 +188,14 @@ fun InfoScreen(
                     color = MaterialTheme.colorScheme.onSurfaceVariant
                 )
 
-                Button(
+                AppActionButton(
+                    text = stringResource(R.string.open_api_site),
+                    icon = Icons.AutoMirrored.Filled.OpenInNew,
                     onClick = {
                         val intent = Intent(Intent.ACTION_VIEW, apiUrl.toUri())
                         context.startActivity(intent)
-                    },
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .height(54.dp),
-                    shape = MaterialTheme.shapes.large,
-                    contentPadding = PaddingValues(0.dp)
-                ) {
-                    Row(
-                        verticalAlignment = Alignment.CenterVertically,
-                        horizontalArrangement = Arrangement.Center,
-                        modifier = Modifier.fillMaxWidth()
-                    ) {
-                        Icon(
-                            imageVector = Icons.AutoMirrored.Filled.OpenInNew,
-                            contentDescription = null
-                        )
-                        Spacer(modifier = Modifier.width(10.dp))
-                        Text(text = stringResource(R.string.open_api_site))
                     }
-                }
+                )
             }
         }
     }
