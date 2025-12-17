@@ -63,7 +63,7 @@ State management, validation, and API calls are handled in the ViewModel. UI rea
 1. **Clone the repository**
 
 ```bash
-git clone https://github.com/andytrix/holidaycalendar.git
+git clone https://github.com/t2koan07/HolidayCalendar.git
 ```
 
 2. **Open in Android Studio**
