@@ -52,6 +52,8 @@ import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.material3.OutlinedTextFieldDefaults
 import com.andytrix.holidaycalendar.ui.components.AppActionButton
+import androidx.compose.ui.focus.FocusRequester
+import androidx.compose.ui.focus.focusRequester
 
 @Composable
 fun HomeScreen(
@@ -61,6 +63,7 @@ fun HomeScreen(
     val state = vm.uiState
     val focusManager = LocalFocusManager.current
     val keyboardController = LocalSoftwareKeyboardController.current
+    val yearFocusRequester = remember { FocusRequester() }
 
     val selectedCountry = supportedCountries.firstOrNull { it.code == vm.selectedCountryCode }
         ?: supportedCountries.first { it.code == "FI" }
@@ -153,7 +156,9 @@ fun HomeScreen(
                             placeholder = { Text(text = stringResource(R.string.year_hint)) },
                             singleLine = true,
                             keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
-                            modifier = Modifier.fillMaxWidth(),
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .focusRequester(yearFocusRequester),
                             colors = OutlinedTextFieldDefaults.colors(
                                 focusedBorderColor = MaterialTheme.colorScheme.outline.copy(alpha = 1.00f),
                                 unfocusedBorderColor = MaterialTheme.colorScheme.outline.copy(alpha = 1.00f),
@@ -169,7 +174,11 @@ fun HomeScreen(
                             spinIconOnClick = true,
                             isLoading = state is HolidayUiState.Loading,
                             loadingText = stringResource(R.string.loading),
-                            onClick = { vm.fetchHolidays(vm.yearText, vm.selectedCountryCode) }
+                            onClick = {
+                                focusManager.clearFocus(force = true)
+                                keyboardController?.hide()
+                                vm.fetchHolidays(vm.yearText, vm.selectedCountryCode)
+                            }
                         )
 
                         AnimatedVisibility(visible = state is HolidayUiState.Loading) {
@@ -203,7 +212,11 @@ fun HomeScreen(
                             HolidayUiState.Loading -> LoadingView()
                             is HolidayUiState.Error -> ErrorView(
                                 message = stringResource(state.messageResId),
-                                onRetry = { vm.fetchHolidays(vm.yearText, vm.selectedCountryCode) }
+                                onRetry = {
+                                    focusManager.clearFocus(force = true)
+                                    yearFocusRequester.requestFocus()
+                                    keyboardController?.show()
+                                }
                             )
                             is HolidayUiState.Success -> {
                                 Text(
