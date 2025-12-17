@@ -18,31 +18,15 @@ Built with Kotlin and Jetpack Compose, following MVVM architecture.
 
 ## Features
 
-* **Public Holiday Search**
-
-    * Fetch public holidays by country and year
-* **Next Holiday Highlight**
-
-    * Automatically shows the next upcoming holiday
-* **Filtering Options**
-
-    * View only upcoming or global holidays
-* **Error Handling**
-
-    * User friendly messages for network or API errors
-* **Loading States**
-
-    * Spinner displayed while data is loading
-* **Dark Mode Support**
-
-    * Toggleable theme, persisted across launches
-* **Navigation**
-
-    * Separate Home, Info, and Settings screens
-* **Localized Strings**
-
-    * All UI text stored in string resources
-
+- **Public Holiday Search** — Fetch public holidays by country and year
+- **Next Holiday Highlight** — Automatically shows the next upcoming holiday
+- **Filtering Options** — View only upcoming or global holidays
+- **Error Handling** — User friendly messages for network or API errors
+- **Loading States** — Spinner displayed while data is loading
+- **Dark Mode Support** — Toggleable theme, persisted across launches
+- **Navigation** — Separate Home, Info, and Settings screens
+- **Localized Strings** — All UI text stored in string resources
+  
 ## Architecture & Structure
 
 The app follows **MVVM architecture** and is divided into clear layers:
