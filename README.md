@@ -32,19 +32,41 @@ Built with Kotlin and Jetpack Compose, following MVVM architecture.
 The app follows **MVVM architecture** and is divided into clear layers:
 
 ```text
-HolidayCalendar/
+app/src/main/java/com/andytrix/holidaycalendar/
 ├── data/
-│   ├── api/            # Retrofit API definitions
-│   ├── model/          # Data models
-│   ├── repository/     # Data access layer
-│   └── datastore/      # Preferences (country, year, theme)
+│   ├── api/
+│   │   ├── HolidayApi.kt        # API interface
+│   │   └── RetrofitClient.kt    # Retrofit instance
+│   ├── model/
+│   │   ├── Country.kt           # Country model & list
+│   │   └── PublicHoliday.kt     # Holiday data model
+│   ├── repository/
+│   │   └── HolidayRepository.kt # API wrapper
+│   └── PrefsDataStore.kt        # DataStore prefs
 ├── ui/
-│   ├── screens/        # Composable screens
-│   ├── components/     # Reusable UI components
-│   ├── navigation/     # Navigation graph and routes
-│   └── theme/          # Custom colors and theming
-├── viewmodel/          # ViewModel and UI state
-└── MainActivity.kt     # App entry point
+│   ├── screens/
+│   │   ├── HomeScreen.kt        # Main screen
+│   │   ├── InfoScreen.kt        # About screen
+│   │   └── SettingsScreen.kt    # Settings screen
+│   ├── components/
+│   │   ├── AppActionButton.kt   # Action button
+│   │   ├── AppTopBar.kt         # Top bar
+│   │   ├── CountryDropdown.kt   # Country selector
+│   │   ├── ErrorView.kt         # Error view
+│   │   ├── LoadingView.kt       # Loading view
+│   │   └── HolidayListItem.kt   # List item card
+│   ├── navigation/
+│   │   ├── AppNavHost.kt        # Nav host
+│   │   └── Routes.kt            # Route names
+│   ├── theme/
+│   │   ├── Color.kt             # Colors
+│   │   ├── Theme.kt             # Theme setup
+│   │   └── Type.kt              # Typography
+│   └── state/
+│   │   └── HolidayUiState.kt    # UI state types
+├── viewmodel/
+│   └── HolidayViewModel.kt      # ViewModel
+└── MainActivity.kt              # App entry
 ```
 
 State management, validation, and API calls are handled in the ViewModel. UI reacts to state changes using Compose.
