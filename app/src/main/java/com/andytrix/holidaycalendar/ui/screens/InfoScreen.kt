@@ -191,6 +191,7 @@ fun InfoScreen(
                 AppActionButton(
                     text = stringResource(R.string.open_api_site),
                     icon = Icons.AutoMirrored.Filled.OpenInNew,
+                    loadingText = stringResource(R.string.loading),
                     onClick = {
                         val intent = Intent(Intent.ACTION_VIEW, apiUrl.toUri())
                         context.startActivity(intent)

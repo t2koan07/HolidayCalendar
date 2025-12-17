@@ -35,7 +35,7 @@ fun AppActionButton(
     modifier: Modifier = Modifier,
     enabled: Boolean = true,
     isLoading: Boolean = false,
-    loadingText: String = "Loading...",
+    loadingText: String,
     containerColor: Color = MaterialTheme.colorScheme.primary,
     contentColor: Color = MaterialTheme.colorScheme.onPrimary,
     spinIconOnClick: Boolean = false
