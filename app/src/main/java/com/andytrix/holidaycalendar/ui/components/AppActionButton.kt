@@ -26,6 +26,7 @@ import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.graphics.graphicsLayer
+import androidx.compose.foundation.layout.size
 
 @Composable
 fun AppActionButton(
@@ -93,7 +94,7 @@ fun AppActionButton(
         if (isLoading) {
             CircularProgressIndicator(
                 strokeWidth = 2.dp,
-                modifier = Modifier.height(18.dp)
+                modifier = Modifier.size(18.dp)
             )
             Spacer(modifier = Modifier.width(10.dp))
             Text(text = loadingText)
