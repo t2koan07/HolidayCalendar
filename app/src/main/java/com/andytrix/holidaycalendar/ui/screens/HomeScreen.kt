@@ -213,11 +213,24 @@ fun HomeScreen(
                             is HolidayUiState.Error -> ErrorView(
                                 message = stringResource(state.messageResId),
                                 onRetry = {
-                                    focusManager.clearFocus(force = true)
-                                    yearFocusRequester.requestFocus()
-                                    keyboardController?.show()
+                                    when (state.messageResId) {
+                                        R.string.error_invalid_year,
+                                        R.string.error_invalid_country -> {
+                                            // Input error: focus the year field and show keyboard
+                                            focusManager.clearFocus(force = true)
+                                            yearFocusRequester.requestFocus()
+                                            keyboardController?.show()
+                                        }
+                                        else -> {
+                                            // Network/server/unknown error: retry fetch
+                                            focusManager.clearFocus(force = true)
+                                            keyboardController?.hide()
+                                            vm.fetchHolidays(vm.yearText, vm.selectedCountryCode)
+                                        }
+                                    }
                                 }
                             )
+
                             is HolidayUiState.Success -> {
                                 Text(
                                     text = nextHoliday?.name ?: stringResource(R.string.no_upcoming_holidays),
