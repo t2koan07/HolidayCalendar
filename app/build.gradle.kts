@@ -5,11 +5,11 @@ plugins {
 }
 
 android {
-    namespace = "com.andytrix.holidayplanner"
+    namespace = "com.andytrix.holidaycalendar"
     compileSdk = 36
 
     defaultConfig {
-        applicationId = "com.andytrix.holidayplanner"
+        applicationId = "com.andytrix.holidaycalendar"
         minSdk = 24
         targetSdk = 36
         versionCode = 1
