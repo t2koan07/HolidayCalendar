@@ -8,7 +8,7 @@ Built with Kotlin and Jetpack Compose, following MVVM architecture.
 
 ## Contents
 
-* [Introduction](#holidaycalendar)
+* [Introduction](#holiday-calendar)
 * [Features](#features)
 * [Architecture & Structure](#architecture--structure)
 * [Technology Stack](#technology-stack)
