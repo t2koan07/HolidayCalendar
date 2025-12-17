@@ -371,7 +371,7 @@ private fun HeroHeader() {
 
                 Column {
                     Text(
-                        text = stringResource(R.string.home_title),
+                        text = stringResource(R.string.public_holidays),
                         style = MaterialTheme.typography.headlineSmall,
                         color = MaterialTheme.colorScheme.onPrimaryContainer
                     )

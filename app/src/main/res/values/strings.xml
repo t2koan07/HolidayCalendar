@@ -1,8 +1,9 @@
 <resources>
-    <string name="app_title">HolidayPlanner</string>
-    <string name="app_name">HolidayPlanner</string>
+    <string name="app_title">HolidayCalendar</string>
+    <string name="app_name">HolidayCalendar</string>
 
-    <string name="home_title">Public Holidays</string>
+    <string name="home_title">Holiday Calendar</string>
+    <string name="public_holidays">Public Holidays</string>
     <string name="info_title">Info</string>
 
     <string name="select_country">Country</string>
