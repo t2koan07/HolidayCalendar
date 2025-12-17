@@ -4,14 +4,11 @@ HolidayCalendar is a native Android application that allows users to browse publ
 
 Built with Kotlin and Jetpack Compose, following MVVM architecture.
 
-# Live Demo
-
-[▶️ View it live](https://andytrix.github.io/weather-app/index.html)
+![Weather App Gif](https://github.com/user-attachments/assets/0f2d4515-3931-4ade-91b9-50164fcd49cc)
 
 ## Contents
 
 * [Introduction](#holidaycalendar)
-* [Live Demo](#live-demo)
 * [Features](#features)
 * [Architecture & Structure](#architecture--structure)
 * [Technology Stack](#technology-stack)
