@@ -1,6 +1,6 @@
 # Holiday Calendar
 
-Holiday Calendar is a native Android application that allows users to browse public holidays by country and year. The app fetches official holiday data from a public API and presents it in a clean, mobile friendly UI with filtering, theming, and clear state handling.
+Holiday Calendar is a native Android application that allows users to browse public holidays by country and year. The app retrieves public holiday data from an external API and displays it in a clean, mobile friendly UI.
 
 Built with Kotlin and Jetpack Compose, following MVVM architecture.
 
