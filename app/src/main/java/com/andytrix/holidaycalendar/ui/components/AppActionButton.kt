@@ -56,7 +56,6 @@ fun AppActionButton(
             isPressed.value -> pressColor
             else -> containerColor
         },
-        label = "buttonColor"
     )
 
     var spinTrigger by remember { mutableIntStateOf(0) }
