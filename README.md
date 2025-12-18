@@ -4,7 +4,7 @@ Holiday Calendar is a native Android application that allows users to browse pub
 
 Built with Kotlin and Jetpack Compose, following MVVM architecture.
 
-![Weather App Gif](https://github.com/user-attachments/assets/0f2d4515-3931-4ade-91b9-50164fcd49cc)
+![Holiday Calendar Gif](https://github.com/user-attachments/assets/36d166a0-7ba0-43c9-b3cc-84483ff2a028)
 
 ## Contents
 
