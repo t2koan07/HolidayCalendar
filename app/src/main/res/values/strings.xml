@@ -27,6 +27,16 @@
     <string name="error_title">Something went wrong</string>
     <string name="retry">Try again</string>
 
+    <string name="country_fi">Finland</string>
+    <string name="country_se">Sweden</string>
+    <string name="country_no">Norway</string>
+    <string name="country_dk">Denmark</string>
+    <string name="country_ee">Estonia</string>
+    <string name="country_de">Germany</string>
+    <string name="country_fr">France</string>
+    <string name="country_gb">United Kingdom</string>
+    <string name="country_us">United States</string>
+
     <string name="error_invalid_year">Please enter a valid year (1900–2100).</string>
     <string name="error_invalid_country">Please enter a 2-letter country code (e.g., FI).</string>
     <string name="error_network">Network error.</string>

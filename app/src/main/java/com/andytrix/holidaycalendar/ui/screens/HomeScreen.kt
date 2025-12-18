@@ -38,7 +38,7 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.andytrix.holidaycalendar.R
-import com.andytrix.holidaycalendar.data.model.supportedCountries
+import com.andytrix.holidaycalendar.ui.components.supportedCountries
 import com.andytrix.holidaycalendar.ui.components.CountryDropdown
 import com.andytrix.holidaycalendar.ui.components.ErrorView
 import com.andytrix.holidaycalendar.ui.components.HolidayListItem
@@ -62,11 +62,13 @@ fun HomeScreen(
     val vm: HolidayViewModel = viewModel()
     val state = vm.uiState
     val focusManager = LocalFocusManager.current
+    val countries = supportedCountries()
     val keyboardController = LocalSoftwareKeyboardController.current
     val yearFocusRequester = remember { FocusRequester() }
 
-    val selectedCountry = supportedCountries.firstOrNull { it.code == vm.selectedCountryCode }
-        ?: supportedCountries.first { it.code == "FI" }
+    val selectedCountry = countries.firstOrNull { it.code == vm.selectedCountryCode }
+        ?: countries.first { it.code == "FI" }
+
     val year = vm.yearText
 
     var filterUpcoming by remember { mutableStateOf(true) }
@@ -142,7 +144,7 @@ fun HomeScreen(
 
                         CountryDropdown(
                             selected = selectedCountry,
-                            countries = supportedCountries,
+                            countries = countries,
                             onSelected = { vm.updateCountryCode(it.code) },
                             label = stringResource(R.string.select_country)
                         )

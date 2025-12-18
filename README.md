@@ -35,38 +35,39 @@ The app follows **MVVM architecture** and is divided into clear layers:
 app/src/main/java/com/andytrix/holidaycalendar/
 ├── data/
 │   ├── api/
-│   │   ├── HolidayApi.kt        # API interface
-│   │   └── RetrofitClient.kt    # Retrofit instance
+│   │   ├── HolidayApi.kt           # API interface
+│   │   └── RetrofitClient.kt       # Retrofit instance
 │   ├── model/
-│   │   ├── Country.kt           # Country model & list
-│   │   └── PublicHoliday.kt     # Holiday data model
+│   │   ├── Country.kt              # Country model & list
+│   │   └── PublicHoliday.kt        # Holiday data model
 │   ├── repository/
-│   │   └── HolidayRepository.kt # API wrapper
-│   └── PrefsDataStore.kt        # DataStore prefs
+│   │   └── HolidayRepository.kt    # API wrapper
+│   └── PrefsDataStore.kt           # DataStore prefs
 ├── ui/
 │   ├── screens/
-│   │   ├── HomeScreen.kt        # Main screen
-│   │   ├── InfoScreen.kt        # About screen
-│   │   └── SettingsScreen.kt    # Settings screen
+│   │   ├── HomeScreen.kt           # Main screen
+│   │   ├── InfoScreen.kt           # About screen
+│   │   └── SettingsScreen.kt       # Settings screen
 │   ├── components/
-│   │   ├── AppActionButton.kt   # Action button
-│   │   ├── AppTopBar.kt         # Top bar
-│   │   ├── CountryDropdown.kt   # Country selector
-│   │   ├── ErrorView.kt         # Error view
-│   │   ├── LoadingView.kt       # Loading view
-│   │   └── HolidayListItem.kt   # List item card
+│   │   ├── AppActionButton.kt      # Action button
+│   │   ├── AppTopBar.kt            # Top bar
+│   │   ├── CountryDropdown.kt      # Country selector
+│   │   ├── ErrorView.kt            # Error view
+│   │   ├── LoadingView.kt          # Loading view
+│   │   └── HolidayListItem.kt      # List item card
+│   │   └── SupportedCountries.kt   # Dropdown country data
 │   ├── navigation/
-│   │   ├── AppNavHost.kt        # Nav host
-│   │   └── Routes.kt            # Route names
+│   │   ├── AppNavHost.kt           # Nav host
+│   │   └── Routes.kt               # Route names
 │   ├── theme/
-│   │   ├── Color.kt             # Colors
-│   │   ├── Theme.kt             # Theme setup
-│   │   └── Type.kt              # Typography
+│   │   ├── Color.kt                # Colors
+│   │   ├── Theme.kt                # Theme setup
+│   │   └── Type.kt                 # Typography
 │   └── state/
-│   │   └── HolidayUiState.kt    # UI state types
+│   │   └── HolidayUiState.kt       # UI state types
 ├── viewmodel/
-│   └── HolidayViewModel.kt      # ViewModel
-└── MainActivity.kt              # App entry
+│   └── HolidayViewModel.kt         # ViewModel
+└── MainActivity.kt                 # App entry
 ```
 
 State management, validation, and API calls are handled in the ViewModel. UI reacts to state changes using Compose.
