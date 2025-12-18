@@ -38,7 +38,7 @@ app/src/main/java/com/andytrix/holidaycalendar/
 │   │   ├── HolidayApi.kt           # API interface
 │   │   └── RetrofitClient.kt       # Retrofit instance
 │   ├── model/
-│   │   ├── Country.kt              # Country model & list
+│   │   ├── Country.kt              # Country model
 │   │   └── PublicHoliday.kt        # Holiday data model
 │   ├── repository/
 │   │   └── HolidayRepository.kt    # API wrapper
@@ -54,7 +54,7 @@ app/src/main/java/com/andytrix/holidaycalendar/
 │   │   ├── CountryDropdown.kt      # Country selector
 │   │   ├── ErrorView.kt            # Error view
 │   │   ├── LoadingView.kt          # Loading view
-│   │   └── HolidayListItem.kt      # List item card
+│   │   ├── HolidayListItem.kt      # List item card
 │   │   └── SupportedCountries.kt   # Dropdown country data
 │   ├── navigation/
 │   │   ├── AppNavHost.kt           # Nav host
